@@ -1,5 +1,6 @@
 from unittest import TestCase
-from main import rectangular
+from ..main import rectangular
+
 
 class test_rectangular_function(TestCase):
 
