@@ -1,0 +1,43 @@
+name: Auto Merge Owner PR
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      
+      - name: flake8 and pylint
+        run: |
+          pip install -r requirements.txt
+          flake8 --ignore=E501,E231 *.py tests/*.py
+          pylint --errors-only --disable=C0301 --disable=C0326 tests/*.py
+      
+      - name: unit test
+        run: python -m unittest --verbose --failfast
+  
+
+
+  merge:
+    if: github.actor == 'hasan-kh'
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: managedkaos/merge-pull-request@v1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
