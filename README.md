@@ -1,3 +1,0 @@
-# auto-merge
-YOOO
-YOOO
