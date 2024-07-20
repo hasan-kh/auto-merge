@@ -1,3 +1,1 @@
-# auto-merge
-YOOO
-YOOO
+THIS IS HOW YOU WRITE README
